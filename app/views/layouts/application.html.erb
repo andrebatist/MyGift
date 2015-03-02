@@ -1,0 +1,45 @@
+<!DOCTYPE html> <%# Это файл макета-шаблона для всех веб-страниц%>
+<html>
+<head>
+  
+  <title>Pragprog Books Online Store</title> <%# заголовок страницы%>
+  
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+  
+</head>
+
+
+  <body class='<%= controller.controller_name %>'> <%#На каждой странице будет свой стиль css по названию контроллера%>
+  
+
+             <div id="banner"> <%# в id подставляются классы из css файла%>
+               <%= image_tag("logo.png") %> <%# ссылка на URL изображения%>
+               <%= @page_title || "Pragmatic Bookshelf" %> <%#название страницы%>
+               <%#= "The time is:#{@time}"%>
+               
+             </div>
+
+             <div id="columns">
+               
+                <div id="side">
+                   <ul>
+                       <li><a href="http://www....">Home</a></li>
+                       <li><a href="http://www..../faq">Questions</a></li>
+                       <li><a href="http://www..../news">News</a></li>
+                       <li><a href="http://www..../contact">Contact</a></li>
+                       
+                   </ul>
+                   <p> <%= "The time is: #{@time}"%> </p>  
+                </div>
+               
+                <div id="main">
+                       <%= yield %> <%#вызов кода erb и вывод приложения%>
+                </div>
+               
+            </div>
+   </body>
+    
+</html>
+
