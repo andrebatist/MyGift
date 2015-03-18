@@ -1,6 +1,6 @@
 class LineItemsController < ApplicationController
   include CurrentCart #текущая корзина
-  before_action :set_cart, only: [:create,:destroy] #только создание текущей корзины 
+  before_action :set_cart, only: [:create,:destroy,:minus_quantity] #только создание текущей корзины 
   before_action :set_line_item, only: [:show, :edit, :update, :destroy]
 
   # GET /line_items
@@ -73,6 +73,17 @@ class LineItemsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+   def minus_quantity
+      if @line_item.quantity>1
+           @line_item.quantity-=1
+           get cart_path
+          # respond_to do |format|
+            # format.html { redirect_to store_url}
+            # format.json { head :no_content }
+          # end
+      end
+    end
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -85,14 +96,5 @@ class LineItemsController < ApplicationController
       params.require(:line_item).permit(:product_id)
     end
     
-    def minus_quantity
-      if @line_item.quantity>1
-           @line_item.quantity-=1
-           respond_to do |format|
-             format.html { redirect_to @cart }
-             format.json { head :no_content }
-           end
-      end
-    end
     
 end

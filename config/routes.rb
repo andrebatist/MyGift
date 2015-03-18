@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  resources :line_items
+  resources :line_items do
+    patch 'minus_quantity', on: :member
+  end
 
   resources :carts
 
@@ -9,6 +11,7 @@ Rails.application.routes.draw do
   
   root to: 'store#index', as: 'store' #задана главная страница as: 'store' создает store_path
 
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
