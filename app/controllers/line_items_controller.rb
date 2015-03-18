@@ -1,6 +1,6 @@
 class LineItemsController < ApplicationController
   include CurrentCart #текущая корзина
-  before_action :set_cart, only: [:create] #только создание текущей корзины 
+  before_action :set_cart, only: [:create,:destroy] #только создание текущей корзины 
   before_action :set_line_item, only: [:show, :edit, :update, :destroy]
 
   # GET /line_items
@@ -65,11 +65,11 @@ class LineItemsController < ApplicationController
   # DELETE /line_items/1
   # DELETE /line_items/1.json
   def destroy
-    @line_item = LineItem.find(params[:id])
+    #@line_item = LineItem.find(params[:id])
     @line_item.destroy
     
     respond_to do |format|
-      format.html { redirect_to @cart.current_cart, notice: 'Item removed.' }
+      format.html { redirect_to @cart, notice: 'Item removed.' }
       format.json { head :no_content }
     end
   end
@@ -84,4 +84,15 @@ class LineItemsController < ApplicationController
     def line_item_params
       params.require(:line_item).permit(:product_id)
     end
+    
+    def minus_quantity
+      if @line_item.quantity>1
+           @line_item.quantity-=1
+           respond_to do |format|
+             format.html { redirect_to @cart }
+             format.json { head :no_content }
+           end
+      end
+    end
+    
 end

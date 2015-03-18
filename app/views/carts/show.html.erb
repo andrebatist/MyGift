@@ -9,7 +9,7 @@
 <table>
   <% @cart.line_items.each do |item| %>
   <tr>
-    <td><%=button_to '-', @line_item, method: :minus_quantity %> </td>
+    <td><%=button_to '-', item, method: :minus_quantity %> </td>
     <td><%=item.quantity %>&times;</td>
     <td><%=button_to '+', @line_item, method: :plus_quantity %> </td>
     <td><%=item.product.title %></td>
