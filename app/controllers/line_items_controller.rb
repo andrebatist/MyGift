@@ -1,4 +1,5 @@
 class LineItemsController < ApplicationController
+  skip_before_action :authorize, only: :create
   include CurrentCart #текущая корзина
   before_action :set_cart, only: [:create,:destroy,:minus_quantity] #только создание текущей корзины 
   before_action :set_line_item, only: [:show, :edit, :update, :destroy]
@@ -35,9 +36,9 @@ class LineItemsController < ApplicationController
         @line_item = @cart.add_product(product.id)
       respond_to do |format|
           if @line_item.save
-                format.html { redirect_to @line_item.cart }
+                format.html { redirect_to store_url }
                   #,notice: 'Line item was successfully created.' }
-
+              format.js
               format.json { render action: 'show',
                   status: :created, location: @line_item }
           else
@@ -76,13 +77,13 @@ class LineItemsController < ApplicationController
   
    def minus_quantity
       if @line_item.quantity>1
-           @line_item.quantity-=1
-           get cart_path
-          # respond_to do |format|
-            # format.html { redirect_to store_url}
-            # format.json { head :no_content }
-          # end
+           @line_item.update_attributes(:quantity => @line_item.quantity - 1)
       end
+           respond_to do |format|
+             format.html { redirect_to @cart , notice: 'Item removed.'}
+             format.json { head :no_content }
+           end
+      
     end
 
   private

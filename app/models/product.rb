@@ -9,7 +9,15 @@ class Product < ActiveRecord::Base
 }
 
 has_many :line_items
+has_many :orders, through: :line_items
+
       before_destroy :ensure_not_referenced_by_any_line_item
+      
+  def self.search(search)
+    search_condition = "%" + search + "%"
+    find(:all, :conditions => ['title LIKE ? OR description LIKE ?', search_condition, search_condition])
+  end
+      
     #...
       private
       # убеждаемся в отсутствии товарных позиций, ссылающихся на данный товар

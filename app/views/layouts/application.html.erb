@@ -1,8 +1,11 @@
 <!DOCTYPE html> <%# Это файл макета-шаблона для всех веб-страниц%>
 <html>
+  
+  
+  
 <head>
   
-  <title>Pragprog Books Online Store</title> <%# заголовок страницы%>
+  <title>MyGift.com</title> <%# заголовок страницы%>
   
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
@@ -16,30 +19,59 @@
 
              <div id="banner"> <%# в id подставляются классы из css файла%>
                <%= image_tag("logo.png") %> <%# ссылка на URL изображения%>
-               <%= @page_title || "Pragmatic Bookshelf" %> <%#название страницы%>
-               <%#= "The time is:#{@time}"%>
+               <%= @page_title || "MyGift" %> <%#название страницы%>
                
+                <div id="search">
+               <% render :partial => "products/search" %>
+               </div>
              </div>
+    
 
              <div id="columns">
                
                 <div id="side">
-                   <ul>
-                       <li><a href="http://www....">Home</a></li>
-                       <li><a href="http://www..../faq">Questions</a></li>
-                       <li><a href="http://www..../news">News</a></li>
-                       <li><a href="http://www..../contact">Contact</a></li>
-                       
+                  
+                  <div id="cart">
+                      <% if @cart %>
+                          <%= hidden_div_if(@cart.line_items.empty?, id: 'cart') do %>
+                              <%= render @cart %>
+                          <% end %>
+                    
+                      <% end %>
+                  </div>
+                  
+               <% if session[:user_id] %>
+                   <p><%= "You signed as: Admin"%></p>
+                  <ul>
+                       <li><%= link_to 'Orders', orders_path %></li>
+                       <li><%= link_to 'Products', products_path %></li>
+                       <li><%= link_to 'Users', users_path %></li>
                    </ul>
+                  <%= button_to 'Logout', logout_path, method: :delete %>
+               <% end %>
+                  
                    <p> <%= "The time is: #{@time}"%> </p>  
                 </div>
                
                 <div id="main">
-                       <%= yield %> <%#вызов кода erb и вывод приложения%>
+                 <%= yield %> <%#вызов кода erb и вывод приложения%>
                 </div>
                
             </div>
+    
+  
+     
+    <div id="footer">
+      <%= link_to 'Как оформить заказ' , downpanel_chekoutinf_path %>
+      <%= link_to 'Оплата заказа' , downpanel_payinf_path %>
+      <%= link_to 'Доставка' , downpanel_shipinf_path %>
+      <%= link_to 'FAQ' , downpanel_faq_path %>
+    </div>
+    
+  
+  
    </body>
     
+   
 </html>
 

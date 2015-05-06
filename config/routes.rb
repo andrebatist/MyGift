@@ -1,4 +1,32 @@
 Rails.application.routes.draw do
+  
+  get 'downpanel/chekoutinf'
+
+  get 'downpanel/payinf'
+
+  get 'downpanel/shipinf'
+
+  get 'downpanel/faq'
+
+   get 'admin' => 'admin#index'
+      controller :sessions do
+          get 'login' => :new
+          post 'login' => :create
+          delete 'logout' => :destroy
+      end
+  
+  get 'admin/index'
+
+  get 'sessions/new'
+
+  get 'sessions/create'
+
+  get 'sessions/destroy'
+
+  resources :users
+
+  resources :orders
+
   resources :line_items do
     patch 'minus_quantity', on: :member
   end
@@ -6,6 +34,10 @@ Rails.application.routes.draw do
   resources :carts
 
   get 'store/index'
+  
+  resources :products do
+          get :who_bought, on: :member
+     end
 
   resources :products
   

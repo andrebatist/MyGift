@@ -1,6 +1,8 @@
 class StoreController < ApplicationController
-  def index
-    @products=Product.order(:title) #заносим в представление модели Store данные по модели Product в алфавитном порядке по столбцу title 
-    @time = Time.now  #время сейчас
+  skip_before_action :authorize
+  include CurrentCart
+  before_action :set_cart
+   def index
+     @products = Product.order(:title)
   end
 end
